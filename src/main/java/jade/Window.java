@@ -1,15 +1,18 @@
 package jade;
 
 import org.lwjgl.Version;
-import org.lwjgl.glfw.GLFW.*;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.opengl.GL;
 
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class Window {
-    private int width, height;
-    private String title;
+    private final int width;
+    private final int height;
+    private final String title;
 
     private long glfwWindow;
 
@@ -58,11 +61,18 @@ public class Window {
             throw new IllegalStateException("Failed to create the GLFW Window");
         }
 
+        //make context currnet
+        glfwMakeContextCurrent(glfwWindow);
+        //enable vsync
+        glfwSwapInterval(1);
 
+        //make window visible
+        glfwShowWindow(glfwWindow);
 
+        GL.createCapabilities();
     }
     public void loop() {
-        while(!glfwWindowShouldClose(window) )  {
+        while(!glfwWindowShouldClose(glfwWindow) )  {
             //poll events
             glfwPollEvents();
             glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
